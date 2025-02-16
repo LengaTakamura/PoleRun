@@ -14,6 +14,8 @@ public class PlayerMove : MonoBehaviour
     private void FixedUpdate()
     {
         Moving();
+        AddGravity();
+        InOutWallRun();
     }
     private void Moving()
     {
@@ -25,5 +27,24 @@ public class PlayerMove : MonoBehaviour
     private void AddGravity()
     {
         _rb.AddForce(Vector3.down, ForceMode.Acceleration);
+    }
+
+    private void InOutWallRun()
+    {
+        if (WallCheck() && Input.GetKey(KeyCode.S))
+        {
+            _rb.isKinematic = false;
+           
+        }
+        else if (WallCheck() && Input.GetKey(KeyCode.W))
+        {
+            _rb.isKinematic = true;
+        }
+    }
+
+    private bool WallCheck()
+    {
+        bool wallForward = Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.5f);
+        return wallForward;
     }
 }
