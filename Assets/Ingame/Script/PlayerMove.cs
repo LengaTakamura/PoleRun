@@ -22,15 +22,34 @@ public class PlayerMove : MonoBehaviour
     
     private void FixedUpdate()
     {
-        Moving();
-        AddGravity();
+        StateForUpdate();
         InOutWallRun();
     }
-    private void Moving()
+
+    void StateForUpdate()
+    {
+        if(_state == PlayerState.Normal)
+        {
+            NormalMoving();
+            AddGravity();
+        }
+        else if(_state == PlayerState.Pole) 
+        {
+            PoleMoving();
+        }
+    }
+
+
+    private void NormalMoving()
     {
         var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
 
         transform.position += input * _speed;
+    }
+
+    private void PoleMoving()
+    {
+
     }
 
     private void AddGravity()
@@ -40,17 +59,22 @@ public class PlayerMove : MonoBehaviour
 
     private void InOutWallRun()
     {
-        if (WallCheck() && Input.GetKey(KeyCode.S))
+        if (WallCheck())
         {
-            _rb.isKinematic = true;
-            _state = PlayerState.Pole;
+            if (Input.GetKey(KeyCode.W))
+            {
+                _rb.isKinematic = true;
+                _state = PlayerState.Pole;
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                _rb.isKinematic = false;
+                _state = PlayerState.Normal;
+            }
            
         }
-        else if (WallCheck() && Input.GetKey(KeyCode.W))
-        {
-            _rb.isKinematic = false;
-            _state = PlayerState.Normal;
-        }
+        
+      
     }
 
     private bool WallCheck()
