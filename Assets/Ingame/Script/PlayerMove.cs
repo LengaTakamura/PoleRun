@@ -6,27 +6,29 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     float _speed = 5f;
 
-    Rigidbody _rb;
+    private Rigidbody _rb;
 
-    PlayerState _state;
+    private PlayerState _state;
     
-    CapsuleCollider _capsuleCollider;
+    private CapsuleCollider _capsuleCollider;
 
-    [FormerlySerializedAs("_radiusOffset")] [SerializeField]
-    private float radiusOffset = 0.1f;
+    [SerializeField]
+    private float _radiusOffset = 0.1f;
 
-    [FormerlySerializedAs("_layerMask")] [SerializeField] 
-    private LayerMask layerMask;
+    [SerializeField] 
+    private LayerMask _layerMask;
     
     [SerializeField]
-    float poleRunSpeed = 5f;
+    private float _poleRunSpeed = 5f;
 
     private float _angle = 0;
 
     public bool IsGround;
+    
+    private bool _onPole = false;
 
-    [FormerlySerializedAs("_length")] [SerializeField] 
-    private float length;
+    [FormerlySerializedAs("length")] [SerializeField] 
+    private float _length;
     private void Awake()
     {
         Init();
@@ -44,10 +46,12 @@ public class PlayerMove : MonoBehaviour
         GroundCheck();
         StateForUpdate();
         InOutWallRun();
+       
     }
 
     void StateForUpdate()
     {
+        var pole = GetPole();
         if(_state == PlayerState.Normal)
         {
             NormalMoving();
@@ -55,7 +59,7 @@ public class PlayerMove : MonoBehaviour
         }
         else if(_state == PlayerState.Pole) 
         {
-            PoleMoving();
+            PoleMoving(pole);
         }
     }
 
@@ -67,35 +71,36 @@ public class PlayerMove : MonoBehaviour
         transform.position += input * _speed;
     }
 
-    private void PoleMoving()
+    private void PoleMoving(Collider other)
     {
-        var collider = GetWall();
-        var pole = collider as CapsuleCollider;
+        var pole = other as CapsuleCollider;
         Vector3 localUp = pole.transform.up;
         Vector3 yMovement = localUp * Input.GetAxis("Vertical") * _speed;
-         _angle = Input.GetAxisRaw("Horizontal") * poleRunSpeed ;
+         _angle = Input.GetAxisRaw("Horizontal") * _poleRunSpeed ;
          float radian = -_angle * Mathf.Deg2Rad;
          var newPosition = transform.position +yMovement;
-         Debug.Log(newPosition);
          transform.position = newPosition;
         transform.RotateAround(pole.transform.position, Vector3.up, radian);
         
     }
 
-    private Collider GetWall()
+    private Collider GetPole()
     {
-        var bottum = transform.position - Vector3.up * (_capsuleCollider.height / 2 + _capsuleCollider.radius) + _capsuleCollider.center;
+        var bottom = transform.position - Vector3.up * (_capsuleCollider.height / 2 + _capsuleCollider.radius) + _capsuleCollider.center;
         var top = transform.position + Vector3.up * (_capsuleCollider.height / 2 - _capsuleCollider.radius) + _capsuleCollider.center;
-        var hits = Physics.OverlapCapsule(bottum, top, _capsuleCollider.radius + radiusOffset, layerMask);
-        try
+        var hits = Physics.OverlapCapsule(bottom, top, _capsuleCollider.radius + _radiusOffset, _layerMask);
+        if (hits.Length > 0)
         {
-            Debug.Log(hits[0].gameObject.name);
+            _onPole = true;
             return hits[0];
         }
-        catch
+        else
         {
-            return null;    
+            _onPole = false;
+            return null;
         }
+           
+        
 
     }
     private void AddGravity()
@@ -105,16 +110,15 @@ public class PlayerMove : MonoBehaviour
 
     private void InOutWallRun()
     {
-        if (WallCheck())
+        if (_onPole)
         {
             if (Input.GetKey(KeyCode.W) && IsGround)
             {
-                _rb.isKinematic = true;
                 _state = PlayerState.Pole;
             }
             else if (Input.GetKey(KeyCode.S)&& IsGround)
             {
-                _rb.isKinematic = false;
+               
                 _state = PlayerState.Normal;
             }
            
@@ -125,17 +129,17 @@ public class PlayerMove : MonoBehaviour
     
     void GroundCheck()
     {
-        IsGround = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down).normalized * length, out RaycastHit hit, 1.2f);
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down).normalized * length, Color.magenta);
-
+        IsGround = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down).normalized * _length, out RaycastHit hit, 1.2f);
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down).normalized * _length, Color.magenta);
+    
     }
 
-    private bool WallCheck()
-    {
-        bool wallForward = Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.5f);
-        Debug.DrawRay(transform.position, transform.forward, Color.white);
-        return wallForward;
-    }
+    // private bool WallCheck()
+    // {
+    //     bool wallForward = Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.5f);
+    //     Debug.DrawRay(transform.position, transform.forward, Color.white);
+    //     return wallForward;
+    // }
 
     public enum PlayerState
     {

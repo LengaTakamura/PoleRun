@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0.1
-  radiusOffset: 0.52
+  radiusOffset: 0.5
   layerMask:
     serializedVersion: 2
     m_Bits: 64
