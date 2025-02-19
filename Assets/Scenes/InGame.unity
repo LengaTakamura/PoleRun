@@ -245,13 +245,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0.1
-  radiusOffset: 0.5
-  layerMask:
+  _radiusOffset: 0.5
+  _layerMask:
     serializedVersion: 2
     m_Bits: 64
-  poleRunSpeed: 200
+  _poleRunSpeed: 200
   IsGround: 0
-  length: 1
+  _length: 1
 --- !u!54 &806445848
 Rigidbody:
   m_ObjectHideFlags: 0
