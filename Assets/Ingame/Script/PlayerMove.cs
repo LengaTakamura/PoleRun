@@ -23,12 +23,33 @@ public class PlayerMove : MonoBehaviour
 
     private float _angle = 0;
 
-    public bool IsGround;
     
+    private bool _isGround = false;
+
+    public bool IsGround
+    {
+        get => _isGround;
+        set
+        {
+            if (_isGround != value)
+            {
+                _isGround = value;
+                if (value)
+                {
+                    _state = PlayerState.Normal;
+                }
+            }
+            
+        }
+    }
+
     private bool _onPole = false;
 
     [FormerlySerializedAs("length")] [SerializeField] 
     private float _length;
+    
+    [SerializeField]
+    private float _jumpForce = 5f;
     private void Awake()
     {
         Init();
@@ -52,14 +73,18 @@ public class PlayerMove : MonoBehaviour
     void StateForUpdate()
     {
         var pole = GetPole();
-        if(_state == PlayerState.Normal)
+       
+        if(_state != PlayerState.Pole)
         {
             NormalMoving();
             AddGravity();
         }
-        else if(_state == PlayerState.Pole) 
+        else if(_state == PlayerState.Pole && pole != null) 
         {
+            var normal = transform.position - pole.ClosestPoint(transform.position);
+            normal.Normalize();
             PoleMoving(pole);
+            PoleJump(normal);
         }
     }
 
@@ -134,13 +159,16 @@ public class PlayerMove : MonoBehaviour
     
     }
 
-    // private bool WallCheck()
-    // {
-    //     bool wallForward = Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 0.5f);
-    //     Debug.DrawRay(transform.position, transform.forward, Color.white);
-    //     return wallForward;
-    // }
+    void PoleJump(Vector3 normal)
+    {
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            _rb.AddForce(normal * _jumpForce, ForceMode.Impulse);
+            _state = PlayerState.Air;
+        }
+    }
 
+    
     public enum PlayerState
     {
         Normal,Pole,Air    
