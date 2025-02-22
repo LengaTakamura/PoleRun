@@ -43,7 +43,26 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    private bool _onPole = false;
+    private bool _onPole ;
+
+    public bool OnPole
+    {
+        get
+        {
+            return _onPole;
+        }
+        set
+        {
+            if (_onPole != value)
+            {
+                _onPole = value;
+                if (value)
+                {
+                    _state = PlayerState.Pole;
+                }
+            }
+        }
+    }
 
     [FormerlySerializedAs("length")] [SerializeField] 
     private float _length;
@@ -66,7 +85,7 @@ public class PlayerMove : MonoBehaviour
     {
         GroundCheck();
         StateForUpdate();
-        InOutWallRun();
+        ChangeState();
        
     }
 
@@ -87,12 +106,6 @@ public class PlayerMove : MonoBehaviour
             PoleJump(normal);
         }
     }
-
-    void Rotating()
-    {
-       
-    }
-
 
     private void NormalMoving()
     {
@@ -133,12 +146,12 @@ public class PlayerMove : MonoBehaviour
         var hits = Physics.OverlapCapsule(bottom, top, _capsuleCollider.radius + _radiusOffset, _layerMask);
         if (hits.Length > 0)
         {
-            _onPole = true;
+            OnPole = true;
             return hits[0];
         }
         else
         {
-            _onPole = false;
+            OnPole = false;
             return null;
         }
            
@@ -150,9 +163,9 @@ public class PlayerMove : MonoBehaviour
         _rb.AddForce(Vector3.down, ForceMode.Acceleration);
     }
 
-    private void InOutWallRun()
+    private void ChangeState()
     {
-        if (_onPole)
+        if (OnPole)
         {
             if (Input.GetKey(KeyCode.W) && IsGround)
             {
