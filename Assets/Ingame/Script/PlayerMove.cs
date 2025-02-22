@@ -88,16 +88,25 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    void Rotating()
+    {
+       
+    }
+
 
     private void NormalMoving()
     {
         var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
 
         transform.position += input * _speed;
+        
+        var rot = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(input), 10f);
+        transform.rotation = rot;
     }
 
     private void PoleMoving(Collider other)
     {
+        Vector3 prevPos = transform.position;
         var pole = other as CapsuleCollider;
         Vector3 localUp = pole.transform.up;
         Vector3 yMovement = localUp * Input.GetAxis("Vertical") * _speed;
@@ -106,6 +115,14 @@ public class PlayerMove : MonoBehaviour
          var newPosition = transform.position +yMovement;
          transform.position = newPosition;
         transform.RotateAround(pole.transform.position, Vector3.up, radian);
+        Vector3 dir = (transform.position - prevPos).normalized;
+        if (dir != Vector3.zero)
+        {
+            var rot =  Quaternion.LookRotation(dir, Vector3.up);
+            rot.x = 0;
+            rot.z = 0;
+            transform.rotation = rot;
+        }
         
     }
 
@@ -163,7 +180,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            _rb.AddForce(normal * _jumpForce, ForceMode.Impulse);
+            _rb.AddForce(normal * _jumpForce, ForceMode.Acceleration);
             _state = PlayerState.Air;
         }
     }

@@ -250,8 +250,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _poleRunSpeed: 200
-  IsGround: 0
   _length: 1
+  _jumpForce: 5
 --- !u!54 &806445848
 Rigidbody:
   m_ObjectHideFlags: 0
