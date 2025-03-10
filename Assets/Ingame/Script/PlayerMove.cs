@@ -103,7 +103,7 @@ public class PlayerMove : MonoBehaviour
             var normal = transform.position - pole.ClosestPoint(transform.position);
             normal.Normalize();
             PoleMoving(pole);
-            PoleJump(normal);
+            PoleJump();
         }
     }
 
@@ -112,7 +112,11 @@ public class PlayerMove : MonoBehaviour
         var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
 
         transform.position += input * _speed;
-        
+
+        if (input == Vector3.zero)
+        {
+            return;
+        }
         var rot = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(input), 10f);
         transform.rotation = rot;
     }
@@ -189,16 +193,15 @@ public class PlayerMove : MonoBehaviour
     
     }
 
-    void PoleJump(Vector3 normal)
+    void PoleJump()
     {
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            _rb.AddForce(normal * _jumpForce, ForceMode.Acceleration);
+            Debug.Log(transform.forward);
+            _rb.AddForce(transform.forward * _jumpForce, ForceMode.Acceleration);
             _state = PlayerState.Air;
         }
     }
-
-    
     public enum PlayerState
     {
         Normal,Pole,Air    

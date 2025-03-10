@@ -251,7 +251,7 @@ MonoBehaviour:
     m_Bits: 64
   _poleRunSpeed: 200
   _length: 1
-  _jumpForce: 5
+  _jumpForce: 10
 --- !u!54 &806445848
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -383,7 +383,7 @@ Transform:
   m_GameObject: {fileID: 974293327}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.8956966, y: -1.9377604, z: 4.895945}
+  m_LocalPosition: {x: 6.8956966, y: -1.9377604, z: -0.29}
   m_LocalScale: {x: 3.66, y: 6.602009, z: 3.66}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -871,7 +871,7 @@ Transform:
   m_GameObject: {fileID: 1913078262}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.995697, y: -1.9377604, z: 13.205945}
+  m_LocalPosition: {x: 15.65, y: -1.9377604, z: 13.205945}
   m_LocalScale: {x: 3.66, y: 6.602009, z: 3.66}
   m_ConstrainProportionsScale: 1
   m_Children: []
