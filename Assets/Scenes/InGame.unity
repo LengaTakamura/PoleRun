@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 806445848}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -225,7 +225,7 @@ Transform:
   m_GameObject: {fileID: 806445842}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.9766564, y: 2.977, z: -6.886397}
+  m_LocalPosition: {x: 0.62, y: 2.977, z: -16.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -401,6 +401,7 @@ GameObject:
   - component: {fileID: 1011560041}
   - component: {fileID: 1011560040}
   - component: {fileID: 1011560043}
+  - component: {fileID: 1011560044}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -475,8 +476,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1011560039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.91, z: -21.34}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.624, y: 3.55, z: -16.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -526,6 +527,21 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &1011560044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011560039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e4817e8e11fd245b7321f0844bcce2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mouseSensitivity: 5
+  _cameraOffset: {x: 0, y: 0.5, z: 0}
+  _speed: 100
 --- !u!1 &1048700862
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,8 +1115,8 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1011560042}
   - {fileID: 1435198681}
   - {fileID: 2107778846}
   - {fileID: 806445846}
   - {fileID: 1048700863}
+  - {fileID: 1011560042}

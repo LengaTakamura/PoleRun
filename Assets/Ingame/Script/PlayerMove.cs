@@ -112,13 +112,6 @@ public class PlayerMove : MonoBehaviour
         var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
 
         transform.position += input * _speed;
-
-        if (input == Vector3.zero)
-        {
-            return;
-        }
-        var rot = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(input), 10f);
-        transform.rotation = rot;
     }
 
     private void PoleMoving(Collider other)
